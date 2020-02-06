@@ -33,7 +33,6 @@
 clearvars -except analysis kd_sigs
 
 
-                                                   
 %% didn't end up using these
 % Set up data structure for minus 3 to plus 3 seconds outputs for various
 % measures of activity
