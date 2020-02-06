@@ -179,7 +179,6 @@ for m=1:size(sig_kd,1);
     
     SI_an(m,:) = SImean_an;
     
-    
 end
 
 % Add sorting functions
@@ -189,7 +188,6 @@ end
 
 %The code below simply plots a set of resulting figures based on the
 %results for a single brain using 'IS' and 'SI'
-
 
 %% kd
 %figure
@@ -270,7 +268,7 @@ end
 
 
 
-
+%% If want to put results into objects later on
 %% put results into m3p3 object
 m3p3(2).ItoS_cell_sig_f_f0 = IS_kd;
 m3p3(2).StoI_cell_sig_f_f0 = SI_kd;
