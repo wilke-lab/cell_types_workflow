@@ -10,7 +10,7 @@ constructs 6 data sets: kd, z score, analysis for both Immobile-to-Struggling an
 
 
 ## Notes
-You need sort_max_time_fxn.m open and running in order for the code to work.
+You need the **sort_max_time_fxn.m** file open and running in order for this code to work.
 
 The code currently outputs 2 figures.
 1. The first figure contains displays the results of 1 frame per bin
