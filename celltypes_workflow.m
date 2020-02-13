@@ -34,6 +34,8 @@ clearvars -except analysis kd_sigs
 %% Loading data into ItoS_epoch_edge_frames and StoI_epoch_edge_frames
 
 %{
+%% Loading into m3p3_range_ItoS and m3p3_range_StoI
+
 % loading struggle and immobile epochs
 struggle_range_long = analysis(2).struggle_range_long; % contains start and end times
 immobile_range_long = analysis(2).immobile_range_long;
