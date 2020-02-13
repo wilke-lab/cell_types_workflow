@@ -1,25 +1,17 @@
 % Code updated on 2/7/20 by Kyle Fang
-% This code can now take in as many periods within an epoch as needed, as
-% long as the m3p3_range_ItoS and m3p3_range_StoI are formatted as below:
+% This code can now take in as many epochs within a behavior as needed, as
+% long as the ItoS_epoch_edge_frames and StoI_epoch_edge_frames are formatted as below:
 % [start frame 1, end frame 1, start frame 2, end frame 2, etc.]
 
-
-% The only manual components to this code is loading data into m3p3_range_ItoS
-% and m3p3_range_StoI and inputting the number many frames per bin in
-% line ~344.
-
-% Need sort_max_time_fxn.m file to run the sorting section of this code in
-% line ~280
-
-% This code has 2 different  data sets ready to load into m3p3_range_ItoS
-% and m3p3_range_StoI. The data set currently active is 3 seconds before
+% This code has 2 different  data sets ready to load into ItoS_epoch_edge_frames
+% and StoI_epoch_edge_frames. The data set currently active is 3 seconds before
 % and after each change in behavior.
 
-% In order to access the other data set -- beginning (60 frames), middle (60
-% frames), and end (60 frames) periods of each change in behavior --
-% comment out the "Loading into m3p3_range_ItoS and m3p3_range_StoI" and
-% uncomment the "loading different data" section
 
+% In order to access the other data set -- beginning (60 frames), middle (60
+% frames), and end (60 frames) epochs of each change in behavior --
+% comment out the "Loading into ItoS_epoch_edge_frames and StoI_epoch_edge_frames" and
+% uncomment the "loading different data" section
 
 
 % Code written by SAW on 1/23/20
@@ -39,6 +31,9 @@
 clearvars -except analysis kd_sigs
 
 
+%% Loading data into ItoS_epoch_edge_frames and StoI_epoch_edge_frames
+
+%{
 %% Loading into m3p3_range_ItoS and m3p3_range_StoI
 
 % loading struggle and immobile epochs
@@ -100,68 +95,67 @@ end
 
 
 
-%% m3p3_range_ItoS
-%% m3p3_range_ItoS is a matrix where it has
+%% ItoS_epoch_edge_frames
+%% ItoS_epoch_edge_frames is a matrix where it has
 %% beg start frame, beg last frame, mid start frame, mid last frame, end start frame, end last frame
 
-m3p3_range_ItoS = i_rangeL_beg;
+ItoS_epoch_edge_frames = i_rangeL_beg;
 
-[m3p3_range_ItoS_rows, m3p3_range_ItoS_cols] = size(m3p3_range_ItoS);
-m3p3_range_ItoS(:, m3p3_range_ItoS_cols + 1:m3p3_range_ItoS_cols + 2) = i_rangeL_mid;
+[ItoS_epoch_edge_frames_rows, ItoS_epoch_edge_frames_cols] = size(ItoS_epoch_edge_frames);
+ItoS_epoch_edge_frames(:, ItoS_epoch_edge_frames_cols + 1:ItoS_epoch_edge_frames_cols + 2) = i_rangeL_mid;
 
-[m3p3_range_ItoS_rows, m3p3_range_ItoS_cols] = size(m3p3_range_ItoS);
-m3p3_range_ItoS(:, m3p3_range_ItoS_cols + 1:m3p3_range_ItoS_cols + 2) = i_rangeL_end;
+[ItoS_epoch_edge_frames_rows, ItoS_epoch_edge_frames_cols] = size(ItoS_epoch_edge_frames);
+ItoS_epoch_edge_frames(:, ItoS_epoch_edge_frames_cols + 1:ItoS_epoch_edge_frames_cols + 2) = i_rangeL_end;
 
 
-%% m3p3_range_StoI
-% m3p3_range_StoI is a matrix that contains
+%% StoI_epoch_edge_frames
+% StoI_epoch_edge_frames is a matrix that contains
 % beg start frame, beg last frame, mid start frame, mid last frame, end start frame, end last frame
 
-m3p3_range_StoI = s_rangeL_beg;
+StoI_epoch_edge_frames = s_rangeL_beg;
 
-[m3p3_range_StoI_rows, m3p3_range_StoI_cols] = size(m3p3_range_StoI);
-m3p3_range_StoI(:, m3p3_range_StoI_cols + 1:m3p3_range_StoI_cols + 2) = s_rangeL_mid;
+[StoI_epoch_edge_frames_rows, StoI_epoch_edge_frames_cols] = size(StoI_epoch_edge_frames);
+StoI_epoch_edge_frames(:, StoI_epoch_edge_frames_cols + 1:StoI_epoch_edge_frames_cols + 2) = s_rangeL_mid;
 
-[m3p3_range_StoI_rows, m3p3_range_StoI_cols] = size(m3p3_range_StoI);
-m3p3_range_StoI(:, m3p3_range_StoI_cols + 1:m3p3_range_StoI_cols + 2) = s_rangeL_end;
+[StoI_epoch_edge_frames_rows, StoI_epoch_edge_frames_cols] = size(StoI_epoch_edge_frames);
+StoI_epoch_edge_frames(:, StoI_epoch_edge_frames_cols + 1:StoI_epoch_edge_frames_cols + 2) = s_rangeL_end;
 
 
-
-%% loading different data
-%{
-m3p3_range_ItoS = analysis(2).m3p3_range_ItoS;
-m3p3_range_StoI = analysis(2).m3p3_range_StoI;
 %}
 
 
+%% OR Loading different data set
+
+ItoS_epoch_edge_frames = analysis(2).m3p3_range_ItoS;
+StoI_epoch_edge_frames = analysis(2).m3p3_range_StoI;
 
 
-%% Code below works as long as m3p3_range_ItoS and m3p3_range_StoI formatted as
+
+
+
+%% Code below works as long as ItoS_epoch_edge_frames and StoI_epoch_edge_frames formatted as
 %% [start frame 1, end frame 1, start frame 2, end frame 2, etc.]
 
 
 %% code above needs manual input, code below works automatically
 
-
-
 % 3 main types of code
 sig_kd = kd_sigs(2).cell_sig_f_f0;
 sig_zs = zscore(kd_sigs(2).cell_sig_f_f0);
-sig_an = analysis(2).raster;
+sig_ra = analysis(2).raster;
 
-% number_of_periods within an epoch
-[not_needed, number_of_periods] = size(m3p3_range_ItoS);
+% number_of_epoch within a behavior
+[not_needed, number_of_epoch] = size(ItoS_epoch_edge_frames);
 
-% now number_of_periods has the accurate number of periods
-number_of_periods = number_of_periods / 2;
+% now number_of_epoch has the accurate number of epoch
+number_of_epoch = number_of_epoch / 2;
+number_of_frames_per_epoch = zeros(1, number_of_epoch);
 
-number_of_frames_per_period = zeros(1, number_of_periods);
-
-for i = 1:number_of_periods
-    number_of_frames_per_period(1, (i)) = m3p3_range_ItoS(1, i * 2) - m3p3_range_ItoS(1, i * 2 - 1) + 1;
+for i = 1:number_of_epoch
+    number_of_frames_per_epoch(1, (i)) = ItoS_epoch_edge_frames(1, i * 2) - ItoS_epoch_edge_frames(1, i * 2 - 1) + 1;
 end
 
-total_frames = sum(number_of_frames_per_period);
+total_frames = sum(number_of_frames_per_epoch);
 
 % we pre-allocate matrices of zeros which will be populated with spike
 % probability data
@@ -171,24 +165,23 @@ SI_kd = zeros((size(sig_kd,1)), total_frames);
 IS_zs = zeros((size(sig_kd,1)), total_frames);
 SI_zs = zeros((size(sig_kd,1)), total_frames);
 
-IS_an = zeros((size(sig_kd,1)), total_frames);
-SI_an = zeros((size(sig_kd,1)), total_frames);
+IS_ra = zeros((size(sig_kd,1)), total_frames);
+SI_ra = zeros((size(sig_kd,1)), total_frames);
 
 % number_of_events_IS represents number of immobile to struggling events
-number_of_events_IS = size(m3p3_range_ItoS, 1);
+number_of_events_IS = size(ItoS_epoch_edge_frames, 1);
 
 
 %% IS -- Immobile to Struggling
-
 % pre-allocate Isall matrices
 ISall_kd(number_of_events_IS, total_frames) = 0;
     
 ISall_zs(number_of_events_IS, total_frames) = 0;
         
-ISall_an(number_of_events_IS, total_frames) = 0;
+ISall_ra(number_of_events_IS, total_frames) = 0;
 
 
-%% Fill IS_kd, IS_zs, IS_an
+%% Fill IS_kd, IS_zs, IS_ra
 for i = 1:size(sig_kd,1) % loop through each neuron
     % fill ISall with the signals of neuron i during each event
     
@@ -196,17 +189,17 @@ for i = 1:size(sig_kd,1) % loop through each neuron
             
         start_index = 1;
         
-        for m = 1:number_of_periods
-            ISall_kd(row, (start_index: (start_index + number_of_frames_per_period(m) - 1)))...
-            = sig_kd(i, m3p3_range_ItoS(row, m * 2 - 1) : m3p3_range_ItoS(row, m * 2));
+        for m = 1:number_of_epoch
+            ISall_kd(row, (start_index: (start_index + number_of_frames_per_epoch(m) - 1)))...
+            = sig_kd(i, ItoS_epoch_edge_frames(row, m * 2 - 1) : ItoS_epoch_edge_frames(row, m * 2));
         
-            ISall_zs(row, (start_index: (start_index + number_of_frames_per_period(m) - 1)))...
-            = sig_zs(i, m3p3_range_ItoS(row, m * 2 - 1) : m3p3_range_ItoS(row, m * 2));
+            ISall_zs(row, (start_index: (start_index + number_of_frames_per_epoch(m) - 1)))...
+            = sig_zs(i, ItoS_epoch_edge_frames(row, m * 2 - 1) : ItoS_epoch_edge_frames(row, m * 2));
         
-            ISall_an(row, (start_index: (start_index + number_of_frames_per_period(m) - 1)))...
-            = sig_an(i, m3p3_range_ItoS(row, m * 2 - 1) : m3p3_range_ItoS(row, m * 2));
+            ISall_ra(row, (start_index: (start_index + number_of_frames_per_epoch(m) - 1)))...
+            = sig_ra(i, ItoS_epoch_edge_frames(row, m * 2 - 1) : ItoS_epoch_edge_frames(row, m * 2));
 
-            start_index = start_index + number_of_frames_per_period(m);
+            start_index = start_index + number_of_frames_per_epoch(m);
         end
         
     end
@@ -214,47 +207,46 @@ for i = 1:size(sig_kd,1) % loop through each neuron
     % find overall mean signal per frame across of all events
     ISmean_kd = mean(ISall_kd);
     ISmean_zs = mean(ISall_zs);
-    ISmean_an = mean(ISall_an);
+    ISmean_ra = mean(ISall_ra);
 
     % fill a row of IS
     IS_kd(i,:) = ISmean_kd;
     IS_zs(i,:) = ISmean_zs;
-    IS_an(i,:) = ISmean_an;
+    IS_ra(i,:) = ISmean_ra;
 
 end
 
 
 %% Struggling to Immobile -- SI
-
 % number_of_events_SI represents number of struggling to immobile events
-number_of_events_SI = size(m3p3_range_StoI, 1);
+number_of_events_SI = size(StoI_epoch_edge_frames, 1);
 
 % pre-allocate SIall matrices
 SIall_kd(number_of_events_SI, total_frames) = 0;
     
 SIall_zs(number_of_events_SI, total_frames) = 0;
         
-SIall_an(number_of_events_SI, total_frames) = 0;
+SIall_ra(number_of_events_SI, total_frames) = 0;
     
 
-%% Fill SI_kd, SI_zs, SI_an
+%% Fill SI_kd, SI_zs, SI_ra
 for i = 1:size(sig_kd,1) % loop through each neuron
         
     % fill SIall with the signals of neuron i during each event
     for row = 1:number_of_events_SI   % loop through each event
             
         start_index = 1;
-        for m = 1:number_of_periods
-            SIall_kd(row, (start_index: (start_index + number_of_frames_per_period(m) - 1)))...
-            = sig_kd(i, m3p3_range_StoI(row, m * 2 - 1) : m3p3_range_StoI(row, m * 2));
+        for m = 1:number_of_epoch
+            SIall_kd(row, (start_index: (start_index + number_of_frames_per_epoch(m) - 1)))...
+            = sig_kd(i, StoI_epoch_edge_frames(row, m * 2 - 1) : StoI_epoch_edge_frames(row, m * 2));
         
-            SIall_zs(row, (start_index: (start_index + number_of_frames_per_period(m) - 1)))...
-            = sig_zs(i, m3p3_range_StoI(row, m * 2 - 1) : m3p3_range_StoI(row, m * 2));
+            SIall_zs(row, (start_index: (start_index + number_of_frames_per_epoch(m) - 1)))...
+            = sig_zs(i, StoI_epoch_edge_frames(row, m * 2 - 1) : StoI_epoch_edge_frames(row, m * 2));
         
-            SIall_an(row, (start_index: (start_index + number_of_frames_per_period(m) - 1)))...
-            = sig_an(i, m3p3_range_StoI(row, m * 2 - 1) : m3p3_range_StoI(row, m * 2));
+            SIall_ra(row, (start_index: (start_index + number_of_frames_per_epoch(m) - 1)))...
+            = sig_ra(i, StoI_epoch_edge_frames(row, m * 2 - 1) : StoI_epoch_edge_frames(row, m * 2));
 
-            start_index = start_index + number_of_frames_per_period(m);
+            start_index = start_index + number_of_frames_per_epoch(m);
             
         end
             
@@ -263,27 +255,35 @@ for i = 1:size(sig_kd,1) % loop through each neuron
     %find overall mean signal per frame across of all events
     SImean_kd = mean(SIall_kd);
     SImean_zs = mean(SIall_zs);
-    SImean_an = mean(SIall_an);
+    SImean_ra = mean(SIall_ra);
 
     %fill a row of SI
     SI_kd(i,:) = SImean_kd;
     SI_zs(i,:) = SImean_zs;
-    SI_an(i,:) = SImean_an;
+    SI_ra(i,:) = SImean_ra;
 
 end
            
 
 
+%% Prompt user for frames per bin
+
+prompt = "Please input the number of frames per bin: \n" + "(note, your input should be a factor of " ...
++ total_frames + " - the total number of frames)\n\n";
+
+frames_per_bin = input(prompt);
+
+
 %% sort original results
 [sort_IS_kd, sort_SI_kd] = sort_max_time_fxn(IS_kd, SI_kd);
 [sort_IS_zs, sort_SI_zs] = sort_max_time_fxn(IS_zs, SI_zs);
-[sort_IS_an, sort_SI_an] = sort_max_time_fxn(IS_an, SI_an);
+[sort_IS_ra, sort_SI_ra] = sort_max_time_fxn(IS_ra, SI_ra);
 
 
 %% The code below plots a set of resulting figures based on the
 %% results for a single brain using 'IS' and 'SI'
 
-%% original
+%% Plot 1 frame per Bin
 if true
  figure;
 
@@ -318,36 +318,32 @@ title('SI zs sorted')
 caxis([-1 1]);
 
 
-subplot(3,2,5),imagesc(sort_IS_an);
-%subplot(3,2,5),imagesc(IS_an);
+subplot(3,2,5),imagesc(sort_IS_ra);
+%subplot(3,2,5),imagesc(IS_ra);
 %colormap jet
-title('IS an sorted')
+title('IS ra sorted')
 %caxis([0 0.5]);
 
 
-subplot(3,2,6),imagesc(sort_SI_an);
-%subplot(3,2,6),imagesc(SI_an);
+subplot(3,2,6),imagesc(sort_SI_ra);
+%subplot(3,2,6),imagesc(SI_ra);
 %colormap jet
-title('SI an sorted')
+title('SI ra sorted')
 %caxis([0 0.5]);
  
 end
 
 
-
-%% frames_per_bin decides how many frames per bin. Change this variable
-%% to input the number of frames per bin needed.
 %% NOTE: The number of frames per bin MUST be a factor of total number of
 %% frames or the code will break.
-frames_per_bin = 15
 
 bins_IS_kd = zeros((size(sig_kd,1)) , (total_frames/frames_per_bin));
 bins_IS_zs = zeros((size(sig_zs,1)) , (total_frames/frames_per_bin));
-bins_IS_an = zeros((size(sig_an,1)) , (total_frames/frames_per_bin));
+bins_IS_ra = zeros((size(sig_ra,1)) , (total_frames/frames_per_bin));
 
 bins_SI_kd = zeros((size(sig_kd,1)) , (total_frames/frames_per_bin));
 bins_SI_zs = zeros((size(sig_kd,1)) , (total_frames/frames_per_bin));
-bins_SI_an = zeros((size(sig_kd,1)) , (total_frames/frames_per_bin));
+bins_SI_ra = zeros((size(sig_kd,1)) , (total_frames/frames_per_bin));
 
 
 for i = 1:size(sig_kd,1) % loop through each neuron
@@ -355,12 +351,12 @@ for i = 1:size(sig_kd,1) % loop through each neuron
         % IS
         bins_IS_kd(i, j) = mean(IS_kd(i, (j * frames_per_bin - frames_per_bin + 1):(j * frames_per_bin)));
         bins_IS_zs(i, j) = mean(IS_zs(i, (j * frames_per_bin - frames_per_bin + 1):(j * frames_per_bin)));
-        bins_IS_an(i, j) = mean(IS_an(i, (j * frames_per_bin - frames_per_bin + 1):(j * frames_per_bin)));
+        bins_IS_ra(i, j) = mean(IS_ra(i, (j * frames_per_bin - frames_per_bin + 1):(j * frames_per_bin)));
         
         % SI
         bins_SI_kd(i, j) = mean(SI_kd(i, (j * frames_per_bin - frames_per_bin + 1):(j * frames_per_bin)));
         bins_SI_zs(i, j) = mean(SI_zs(i, (j * frames_per_bin - frames_per_bin + 1):(j * frames_per_bin)));
-        bins_SI_an(i, j) = mean(SI_an(i, (j * frames_per_bin - frames_per_bin + 1):(j * frames_per_bin)));
+        bins_SI_ra(i, j) = mean(SI_ra(i, (j * frames_per_bin - frames_per_bin + 1):(j * frames_per_bin)));
     end
 end
 
@@ -368,10 +364,10 @@ end
 %% sort bins
 [sort_bins_IS_kd, sort_bins_SI_kd] = sort_max_time_fxn(bins_IS_kd, bins_SI_kd);
 [sort_bins_IS_zs, sort_bins_SI_zs] = sort_max_time_fxn(bins_IS_zs, bins_SI_zs);
-[sort_bins_IS_an, sort_bins_SI_an] = sort_max_time_fxn(bins_IS_an, bins_SI_an);
+[sort_bins_IS_ra, sort_bins_SI_ra] = sort_max_time_fxn(bins_IS_ra, bins_SI_ra);
 
 
-%% plot bins
+%% Plot customized number of frames per bin
 if true
  figure;
 
@@ -406,17 +402,17 @@ title('SI zs sorted')
 caxis([-1 1]);
 
 
-subplot(3,2,5),imagesc(sort_bins_IS_an);
-%subplot(3,2,5),imagesc(IS_an);
+subplot(3,2,5),imagesc(sort_bins_IS_ra);
+%subplot(3,2,5),imagesc(IS_ra);
 %colormap jet
-title('IS an sorted')
+title('IS ra sorted')
 %caxis([0 0.5]);
 
 
-subplot(3,2,6),imagesc(sort_bins_SI_an);
-%subplot(3,2,6),imagesc(SI_an);
+subplot(3,2,6),imagesc(sort_bins_SI_ra);
+%subplot(3,2,6),imagesc(SI_ra);
 %colormap jet
-title('SI an sorted')
+title('SI ra sorted')
 %caxis([0 0.5]);
  
 end
