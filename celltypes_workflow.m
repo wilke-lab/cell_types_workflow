@@ -37,7 +37,7 @@ clearvars -except analysis kd_sigs
     frames_per_bin = input(prompt);
     
 
-count = 0
+count = 0;
 
 
 
@@ -47,7 +47,7 @@ count = 0
 result_struct = struct;
 
 
-for mouse = 1:2
+for mouse = 1:number_of_mice
 
 
     %% Loading data into ItoS_epoch_edge_frames and StoI_epoch_edge_frames
@@ -56,84 +56,55 @@ for mouse = 1:2
     % loading struggle and immobile epochs
     struggle_range_long = analysis(mouse).struggle_range_long; % contains start and end times
     immobile_range_long = analysis(mouse).immobile_range_long;
-
     % Breaking down long struggle epochs into 3 equal sized chunks, beg, middle, and end
-
-
     %% Struggle
     s_rangeL_beg = [struggle_range_long(:,1), struggle_range_long(:,1) + 59];
     s_rangeL_end = [struggle_range_long(:,2) - 59, struggle_range_long(:,2)];
-
     % s_rangeL_mid contains the very middle of each epoch
     s_rangeL_mid = (size(struggle_range_long,1));
     s_rangeL_mid = zeros(s_rangeL_mid,2); % s_rangeL_mid = zeros(size(struggle_range_long, 1), 2)
-
     for t = 1:size(struggle_range_long,1) % for each epoch
-
         m = struggle_range_long(t,:);
         temp = m(1):m(2);
         temp2 = floor(median(temp));
         start = temp2-30;
         stop = temp2+29; % now med start and finish have 59 difference (60 frames inclusive)
         insert = [start stop];
-
         s_rangeL_mid(t,1)=insert(1,1);
         s_rangeL_mid(t,2)=insert(1,2);
     end
-
-
-
     %% Immobile
     % Breaking down long immobile epochs into 3 equal sized chunks, beg,
     % middle, end
-
     i_rangeL_beg = [immobile_range_long(:,1), immobile_range_long(:,1) + 59];
-
     i_rangeL_end = [immobile_range_long(:,2) - 59, immobile_range_long(:,2)];
-
-
     %% i_rangeL_mid
     i_rangeL_mid = (size(immobile_range_long,1));
     i_rangeL_mid = zeros(i_rangeL_mid,2);
-
-
     for t = 1:size(immobile_range_long,1)
-
         m = immobile_range_long(t,:);
         temp = m(1):m(2);
         temp2 = floor(median(temp));
         start = temp2-30;
         stop = temp2+29; % now med start and finish have 59 difference (60 frames inclusive)
         insert = [start stop];
-
         i_rangeL_mid(t,1)=insert(1,1);
         i_rangeL_mid(t,2)=insert(1,2);
     end
-
-
-
     %% ItoS_epoch_edge_frames
     %% ItoS_epoch_edge_frames is a matrix where it has
     %% beg start frame, beg last frame, mid start frame, mid last frame, end start frame, end last frame
-
     ItoS_epoch_edge_frames = i_rangeL_beg;
-
     [ItoS_epoch_edge_frames_rows, ItoS_epoch_edge_frames_cols] = size(ItoS_epoch_edge_frames);
     ItoS_epoch_edge_frames(:, ItoS_epoch_edge_frames_cols + 1:ItoS_epoch_edge_frames_cols + 2) = i_rangeL_mid;
-
     [ItoS_epoch_edge_frames_rows, ItoS_epoch_edge_frames_cols] = size(ItoS_epoch_edge_frames);
     ItoS_epoch_edge_frames(:, ItoS_epoch_edge_frames_cols + 1:ItoS_epoch_edge_frames_cols + 2) = i_rangeL_end;
-
-
     %% StoI_epoch_edge_frames
     % StoI_epoch_edge_frames is a matrix that contains
     % beg start frame, beg last frame, mid start frame, mid last frame, end start frame, end last frame
-
     StoI_epoch_edge_frames = s_rangeL_beg;
-
     [StoI_epoch_edge_frames_rows, StoI_epoch_edge_frames_cols] = size(StoI_epoch_edge_frames);
     StoI_epoch_edge_frames(:, StoI_epoch_edge_frames_cols + 1:StoI_epoch_edge_frames_cols + 2) = s_rangeL_mid;
-
     [StoI_epoch_edge_frames_rows, StoI_epoch_edge_frames_cols] = size(StoI_epoch_edge_frames);
     StoI_epoch_edge_frames(:, StoI_epoch_edge_frames_cols + 1:StoI_epoch_edge_frames_cols + 2) = s_rangeL_end;
     %}
@@ -299,51 +270,38 @@ for mouse = 1:2
     %{
     if true
      figure;
-
     % title of whole figure
     sgtitle('1 Frame Per Bin')
-
     subplot(3,2,1),imagesc(sort_IS_kd);
     %subplot(3,2,1),imagesc(IS_kd);
     %colormap jet
     title('IS kd sorted')
     caxis([-.1 .1]);
-
-
     subplot(3,2,2),imagesc(sort_SI_kd);
     %subplot(3,2,2),imagesc(SI_kd);
     %colormap jet
     title('SI kd sorted')
     caxis([-.1 .1]);
-
-
     subplot(3,2,3),imagesc(sort_IS_zs);
     %subplot(3,2,3),imagesc(IS_zs);
     %colormap jet
     title('IS zs sorted')
     caxis([-1 1]);
-
-
     subplot(3,2,4),imagesc(sort_SI_zs);
     %subplot(3,2,4),imagesc(SI_zs);
     %colormap jet
     title('SI zs sorted')
     caxis([-1 1]);
-
-
     subplot(3,2,5),imagesc(sort_IS_ra);
     %subplot(3,2,5),imagesc(IS_ra);
     %colormap jet
     title('IS ra sorted')
     %caxis([0 0.5]);
-
-
     subplot(3,2,6),imagesc(sort_SI_ra);
     %subplot(3,2,6),imagesc(SI_ra);
     %colormap jet
     title('SI ra sorted')
     %caxis([0 0.5]);
-
     end
     %}
 
@@ -401,54 +359,54 @@ for mouse = 1:2
     subplot(3,2,1),imagesc(sort_bins_IS_kd);
     %subplot(3,2,1),imagesc(IS_kd);
     %colormap jet
-    title('IS kd sorted')
+    title('IS kd sorted');
     caxis([-.1 .1]);
 
 
     subplot(3,2,2),imagesc(sort_bins_SI_kd);
     %subplot(3,2,2),imagesc(SI_kd);
     %colormap jet
-    title('SI kd sorted')
+    title('SI kd sorted');
     caxis([-.1 .1]);
 
 
     subplot(3,2,3),imagesc(sort_bins_IS_zs);
     %subplot(3,2,3),imagesc(IS_zs);
     %colormap jet
-    title('IS zs sorted')
+    title('IS zs sorted');
     caxis([-1 1]);
 
 
     subplot(3,2,4),imagesc(sort_bins_SI_zs);
     %subplot(3,2,4),imagesc(SI_zs);
     %colormap jet
-    title('SI zs sorted')
+    title('SI zs sorted');
     caxis([-1 1]);
 
 
     subplot(3,2,5),imagesc(sort_bins_IS_ra);
     %subplot(3,2,5),imagesc(IS_ra);
     %colormap jet
-    title('IS ra sorted')
+    title('IS ra sorted');
     %caxis([0 0.5]);
 
 
     subplot(3,2,6),imagesc(sort_bins_SI_ra);
     %subplot(3,2,6),imagesc(SI_ra);
     %colormap jet
-    title('SI ra sorted')
+    title('SI ra sorted');
     %caxis([0 0.5]);
 
     end
     
 
 
-    %% put results into m3p3 object
+    %% put results into result_struct
     m3p3(2).ItoS_cell_sig_f_f0 = IS_kd;
     m3p3(2).StoI_cell_sig_f_f0 = SI_kd;
 
     
-    result_struct(mouse).mouseNum = analysis(mouse).mouseNum
+    result_struct(mouse).mouseNum = analysis(mouse).mouseNum;
     
     result_struct(mouse).sort_bins_IS_kd = sort_bins_IS_kd;
     result_struct(mouse).sort_bins_IS_zs = sort_bins_IS_zs;
@@ -458,61 +416,7 @@ for mouse = 1:2
     result_struct(mouse).sort_bins_SI_zs = sort_bins_SI_zs;
     result_struct(mouse).sort_bins_SI_ra = sort_bins_SI_ra;
     
-    
-    
-    %[sort_bins_IS_kd, sort_bins_SI_kd] = sort_max_time_fxn(bins_IS_kd, bins_SI_kd);
-    %[sort_bins_IS_zs, sort_bins_SI_zs] = sort_max_time_fxn(bins_IS_zs, bins_SI_zs);
-    %[sort_bins_IS_ra, sort_bins_SI_ra] = sort_max_time_fxn(bins_IS_ra, bins_SI_ra);
-    
    
     count = count + 1;
     count    
 end
-
-
-if true
-    figure;
-
-    % title of whole figure
-    sgtitle(frames_per_bin + " frames per bin")
-
-    subplot(3,2,1),imagesc(sort_bins_IS_kdresult_struct(2).sort_bins_IS_kd);
-    %subplot(3,2,1),imagesc(IS_kd);
-    %colormap jet
-    title('IS kd sorted')
-    caxis([-.1 .1]);
-
-
-    subplot(3,2,2),imagesc(result_struct(2).sort_bins_SI_kd);
-    %subplot(3,2,2),imagesc(SI_kd);
-    %colormap jet
-    title('SI kd sorted')
-    caxis([-.1 .1]);
-
-
-    subplot(3,2,3),imagesc(result_struct(2).sort_bins_IS_zs);
-    %subplot(3,2,3),imagesc(IS_zs);
-    %colormap jet
-    title('IS zs sorted')
-    caxis([-1 1]);
-
-
-    subplot(3,2,4),imagesc(result_struct(2).sort_bins_SI_zs);
-    %subplot(3,2,4),imagesc(SI_zs);
-    %colormap jet
-    title('SI zs sorted')
-    caxis([-1 1]);
-
-
-    subplot(3,2,5),imagesc(result_struct(2).sort_bins_IS_ra);
-    %subplot(3,2,5),imagesc(IS_ra);
-    %colormap jet
-    title('IS ra sorted')
-    %caxis([0 0.5]);
-
-
-    subplot(3,2,6),imagesc(result_struct(2).sort_bins_SI_ra);
-    %subplot(3,2,6),imagesc(SI_ra);
-    %colormap jet
-    title('SI ra sorted')
-    %caxis([0 0.5]);
