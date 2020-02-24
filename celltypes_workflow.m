@@ -48,8 +48,7 @@ result_struct = struct;
 
 
 for mouse = 1:number_of_mice
-
-
+%for mouse = 4
     %% Loading data into ItoS_epoch_edge_frames and StoI_epoch_edge_frames
 
     %{
@@ -114,13 +113,27 @@ for mouse = 1:number_of_mice
 
     %% OR Loading different data set
     
+    mouse
+    %mouse = 11
     ItoS_epoch_edge_frames = analysis(mouse).m3p3_range_ItoS;
     StoI_epoch_edge_frames = analysis(mouse).m3p3_range_StoI;
+    
+    %ItoS_epoch_edge_frames = analysis(11).m3p3_range_ItoS;
+    %StoI_epoch_edge_frames = analysis(11).m3p3_range_StoI;
+    %%analysis(11).m3p3_range_ItoS;
+    
     
     %ItoS_epoch_edge_frames = analysis(2).m3p3_range_ItoS;
     %StoI_epoch_edge_frames = analysis(2).m3p3_range_StoI;
 
     
+    
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%    
     
     
 
@@ -346,6 +359,7 @@ for mouse = 1:number_of_mice
     [sort_bins_IS_kd, sort_bins_SI_kd] = sort_max_time_fxn(bins_IS_kd, bins_SI_kd);
     [sort_bins_IS_zs, sort_bins_SI_zs] = sort_max_time_fxn(bins_IS_zs, bins_SI_zs);
     [sort_bins_IS_ra, sort_bins_SI_ra] = sort_max_time_fxn(bins_IS_ra, bins_SI_ra);
+    
 
 
     %% Plot customized number of frames per bin
@@ -354,7 +368,7 @@ for mouse = 1:number_of_mice
      figure;
 
     % title of whole figure
-    sgtitle(frames_per_bin + " frames per bin")
+    sgtitle({"Mouse " + mouse, "mouseNum: " + analysis(mouse).mouseNum, "frames_per_bin " + frames_per_bin})
 
     subplot(3,2,1),imagesc(sort_bins_IS_kd);
     %subplot(3,2,1),imagesc(IS_kd);
@@ -418,5 +432,65 @@ for mouse = 1:number_of_mice
     
    
     count = count + 1;
-    count    
+    count;
+    analysis(mouse).mouseNum
 end
+analysis(mouse).mouseNum;
+ItoS_epoch_edge_frames == analysis(11).m3p3_range_ItoS
+StoI_epoch_edge_frames == analysis(11).m3p3_range_StoI
+
+
+result_struct(11)
+
+
+%{
+if true
+     figure;
+
+    % title of whole figure
+    sgtitle({"Mouse " + mouse, "mouseNum: " + analysis(mouse).mouseNum, "frames_per_bin " + frames_per_bin})
+
+    subplot(3,2,1),imagesc(sort_bins_IS_kd);
+    %subplot(3,2,1),imagesc(IS_kd);
+    %colormap jet
+    title('IS kd sorted');
+    caxis([-.1 .1]);
+
+
+    subplot(3,2,2),imagesc(sort_bins_SI_kd);
+    %subplot(3,2,2),imagesc(SI_kd);
+    %colormap jet
+    title('SI kd sorted');
+    caxis([-.1 .1]);
+
+
+    subplot(3,2,3),imagesc(sort_bins_IS_zs);
+    %subplot(3,2,3),imagesc(IS_zs);
+    %colormap jet
+    title('IS zs sorted');
+    caxis([-1 1]);
+
+
+    subplot(3,2,4),imagesc(sort_bins_SI_zs);
+    %subplot(3,2,4),imagesc(SI_zs);
+    %colormap jet
+    title('SI zs sorted');
+    caxis([-1 1]);
+
+
+    subplot(3,2,5),imagesc(sort_bins_IS_ra);
+    %subplot(3,2,5),imagesc(IS_ra);
+    %colormap jet
+    title('IS ra sorted');
+    %caxis([0 0.5]);
+
+
+    subplot(3,2,6),imagesc(sort_bins_SI_ra);
+    %subplot(3,2,6),imagesc(SI_ra);
+    %colormap jet
+    title('SI ra sorted');
+    %caxis([0 0.5]);
+
+    end
+%}
+
