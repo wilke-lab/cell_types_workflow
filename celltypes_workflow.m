@@ -48,10 +48,12 @@ result_struct = struct;
 
 
 for mouse = 1:number_of_mice
-%for mouse = 4
+%for mouse = 4:6
+%for mouse = 6
+    %{
     %% Loading data into ItoS_epoch_edge_frames and StoI_epoch_edge_frames
 
-    %{
+    
     % loading struggle and immobile epochs
     struggle_range_long = analysis(mouse).struggle_range_long; % contains start and end times
     immobile_range_long = analysis(mouse).immobile_range_long;
@@ -106,14 +108,14 @@ for mouse = 1:number_of_mice
     StoI_epoch_edge_frames(:, StoI_epoch_edge_frames_cols + 1:StoI_epoch_edge_frames_cols + 2) = s_rangeL_mid;
     [StoI_epoch_edge_frames_rows, StoI_epoch_edge_frames_cols] = size(StoI_epoch_edge_frames);
     StoI_epoch_edge_frames(:, StoI_epoch_edge_frames_cols + 1:StoI_epoch_edge_frames_cols + 2) = s_rangeL_end;
-    %}
-
     
+
+    %}
 
 
     %% OR Loading different data set
     
-    mouse
+    %1mouse
     %mouse = 11
     ItoS_epoch_edge_frames = analysis(mouse).m3p3_range_ItoS;
     StoI_epoch_edge_frames = analysis(mouse).m3p3_range_StoI;
@@ -127,15 +129,6 @@ for mouse = 1:number_of_mice
     %StoI_epoch_edge_frames = analysis(2).m3p3_range_StoI;
 
     
-    
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%    
-    
-    
 
     %% Code below works as long as ItoS_epoch_edge_frames and StoI_epoch_edge_frames formatted as
     %% [start frame 1, end frame 1, start frame 2, end frame 2, etc.]
@@ -143,11 +136,20 @@ for mouse = 1:number_of_mice
 
     %% code above needs manual input, code below works automatically
 
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    % 2 or mouse?????
     % 3 main types of code
-    sig_kd = kd_sigs(2).cell_sig_f_f0;
-    sig_zs = zscore(kd_sigs(2).cell_sig_f_f0);
-    sig_ra = analysis(2).raster;
-
+%     sig_kd = kd_sigs(2).cell_sig_f_f0;
+%     sig_zs = zscore(kd_sigs(2).cell_sig_f_f0);
+%     sig_ra = analysis(2).raster;
+    
+    sig_kd = kd_sigs(mouse).cell_sig_f_f0;
+    sig_zs = zscore(kd_sigs(mouse).cell_sig_f_f0);
+    sig_ra = analysis(mouse).raster;
+    
+    
     % number_of_epoch within a behavior
     [not_needed, number_of_epoch] = size(ItoS_epoch_edge_frames);
 
@@ -178,11 +180,9 @@ for mouse = 1:number_of_mice
 
     %% IS -- Immobile to Struggling
     % pre-allocate Isall matrices
-    ISall_kd(number_of_events_IS, total_frames) = 0;
-
-    ISall_zs(number_of_events_IS, total_frames) = 0;
-
-    ISall_ra(number_of_events_IS, total_frames) = 0;
+    ISall_kd = zeros(number_of_events_IS, total_frames);
+    ISall_zs = zeros(number_of_events_IS, total_frames);
+    ISall_ra = zeros(number_of_events_IS, total_frames);
 
 
     %% Fill IS_kd, IS_zs, IS_ra
@@ -225,13 +225,10 @@ for mouse = 1:number_of_mice
     % number_of_events_SI represents number of struggling to immobile events
     number_of_events_SI = size(StoI_epoch_edge_frames, 1);
 
-    % pre-allocate SIall matrices
-    SIall_kd(number_of_events_SI, total_frames) = 0;
-
-    SIall_zs(number_of_events_SI, total_frames) = 0;
-
-    SIall_ra(number_of_events_SI, total_frames) = 0;
-
+    % pre-allocate SIall matrices    
+    SIall_kd = zeros(number_of_events_SI, total_frames);
+    SIall_zs = zeros(number_of_events_SI, total_frames);
+    SIall_ra = zeros(number_of_events_SI, total_frames);
 
     %% Fill SI_kd, SI_zs, SI_ra
     for i = 1:size(sig_kd,1) % loop through each neuron
@@ -341,7 +338,8 @@ for mouse = 1:number_of_mice
 
 
     for i = 1:size(sig_kd,1) % loop through each neuron
-        for j = 1:(length(IS_kd)/frames_per_bin)
+        %for j = 1:(length(IS_kd)/frames_per_bin)
+        for j = 1:(number_of_frames_per_epoch/frames_per_bin)
             % IS
             bins_IS_kd(i, j) = mean(IS_kd(i, (j * frames_per_bin - frames_per_bin + 1):(j * frames_per_bin)));
             bins_IS_zs(i, j) = mean(IS_zs(i, (j * frames_per_bin - frames_per_bin + 1):(j * frames_per_bin)));
@@ -412,6 +410,7 @@ for mouse = 1:number_of_mice
     %caxis([0 0.5]);
 
     end
+
     
 
 
@@ -436,11 +435,11 @@ for mouse = 1:number_of_mice
     analysis(mouse).mouseNum
 end
 analysis(mouse).mouseNum;
-ItoS_epoch_edge_frames == analysis(11).m3p3_range_ItoS
-StoI_epoch_edge_frames == analysis(11).m3p3_range_StoI
+%ItoS_epoch_edge_frames == analysis(11).m3p3_range_ItoS
+%StoI_epoch_edge_frames == analysis(11).m3p3_range_StoI
 
 
-result_struct(11)
+%result_struct(11)
 
 
 %{
