@@ -420,7 +420,7 @@ for mouse = 1:number_of_mice
     %caxis([0 0.5]);
 
     end
-    
+    %}
 
 
     %% put results into result_struct
@@ -430,19 +430,19 @@ for mouse = 1:number_of_mice
     
     result_struct(mouse).mouseNum = analysis(mouse).mouseNum;
     
-    result_struct(mouse).sort_bins_IS_kd = sort_bins_IS_kd;
-    result_struct(mouse).sort_bins_IS_zs = sort_bins_IS_zs;
-    result_struct(mouse).sort_bins_IS_ra = sort_bins_IS_ra;
+    result_struct(mouse).sort_IS_kd = sort_IS_kd;
+    result_struct(mouse).sort_IS_zs = sort_IS_zs;
+    result_struct(mouse).sort_IS_ra = sort_IS_ra;
     
-    result_struct(mouse).sort_bins_SI_kd = sort_bins_SI_kd;
-    result_struct(mouse).sort_bins_SI_zs = sort_bins_SI_zs;
-    result_struct(mouse).sort_bins_SI_ra = sort_bins_SI_ra;
+    result_struct(mouse).sort_SI_kd = sort_SI_kd;
+    result_struct(mouse).sort_SI_zs = sort_SI_zs;
+    result_struct(mouse).sort_SI_ra = sort_SI_ra;
     
    
     count = count + 1;
     count;
     analysis(mouse).mouseNum
-    %}
+    
 end
 %analysis(mouse).mouseNum;
 

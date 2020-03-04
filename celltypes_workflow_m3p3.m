@@ -321,22 +321,12 @@ for mouse = 1:number_of_mice
     count = count + 1;
     count;
     analysis(mouse).mouseNum               
-
-    
-    
+        
 end
 analysis(mouse).mouseNum;
-
-
-%a_del = result_struct(6).sort_SI_ra;
-%a_no_del = result_struct(6).sort_SI_ra;
-
-
 %ItoS_epoch_edge_frames == analysis(11).m3p3_range_ItoS
 %StoI_epoch_edge_frames == analysis(11).m3p3_range_StoI
 
-
-%result_struct(11)
 
 
 %{
