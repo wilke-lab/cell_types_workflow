@@ -1,3 +1,14 @@
+% This code works for both m3p3 and epoch
+% This code is messy, but everything functions perfectly. This was the last version of
+% the code before it was split into 2 separate pieces of code for m3p3 and
+% epoch.
+
+% This code still contains the bins code. If want to re-implement bins in
+% the other pieces of code, just copy/paste the code in. frames_per_bin is
+% still a variable in the other.
+
+
+
 % Code updated on 2/7/20 by Kyle Fang
 % This code can now take in as many epochs within a behavior as needed, as
 % long as the ItoS_epoch_edge_frames and StoI_epoch_edge_frames are formatted as below:
